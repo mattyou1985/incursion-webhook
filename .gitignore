@@ -1,0 +1,15 @@
+## .Net Git Ignore 
+
+# Build files
+[Bb]in/
+[Oo]bj/
+
+# Enviroment Files
+appsettings.json
+[Pp]roperties/
+*.csproj.user
+
+# IDE
+.vscode/
+.vs/
+v17/
