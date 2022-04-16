@@ -1,0 +1,47 @@
+name: Docker Image CI
+
+on:
+  push:
+    # Publish Docker images when commits are made to
+    # main (tag as ':latest') & dev (as ':dev')
+    branches:
+       - main
+       - dev
+    
+    # Publish Docker images when releases with tags 'v1.2.3'
+    # are made using the tag style ':1.2.3'
+    tags: 
+      - v*
+
+jobs:
+  # Push images to GitHub Packages
+  # see: https://docs.docker.com/docker-hub/builds/
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . -t dkr
+      
+      # Login to Docker so we can push images
+    - name: Login to Docker
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      
+    - name: Release UI
+      run: |
+        IMAGE_URL=ghcr.io/${{ github.repository }}
+          
+        # Change all uppercase characters to lowercase
+        IMAGE_URL=$(echo $IMAGE_URL | tr '[A-Z]' '[a-z]')
+          
+        # Get the Branch Name
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          
+        # Strip "v" prefix from tag name
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          
+        # Use Docker `latest` tag convention
+        [ "$VERSION" == "main" ] && VERSION=latest
+          
+        docker tag dkr $IMAGE_URL:$VERSION
+        docker push $IMAGE_URL:$VERSION
