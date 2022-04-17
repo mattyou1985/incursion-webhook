@@ -1,4 +1,6 @@
-﻿using IncursionWebhook.Services.Discord;
+﻿using Coravel;
+using IncursionWebhook.Services.Discord;
+using IncursionWebhook.Services.EveSwagger;
 using IncursionWebhook.Services.Redis;
 
 namespace IncursionWebhook
@@ -17,10 +19,16 @@ namespace IncursionWebhook
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddScheduler();
+            services.AddQueue();
 
             // Custom services
             services.AddDiscordWebhook();
+            services.AddEveSwagger();
             services.AddRedis();
+
+            // Add custom jobs
+            //services.AddSingleton<>();
         }
 
         public void Configure(IApplicationBuilder app)
