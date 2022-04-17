@@ -15,6 +15,10 @@ namespace IncursionWebhook.Services.Discord
         [Key]
         public ulong Id { get; set; }
 
+        private string _webhookUrl;
+        public string WebhookUrl { set => _webhookUrl = value; }
+
+
         #region Webhook User Information
         public string? Avatar { get; set; }
         public string? Name { get; set; }
@@ -32,7 +36,7 @@ namespace IncursionWebhook.Services.Discord
         /// <summary>The Webhook Channel URL</summary>
         /// <example>https://discord.com/channels/{guild_id}/{channel_id}</example>
         /// <remarks>To jump to a specific message, append "/{MessageId}" to this URL</remarks>
-        public string Url
+        public string ChannelUrl
         {
             get => $"{BASE_URL}/{GuildId}/{ChannelId}";
         }
@@ -41,16 +45,16 @@ namespace IncursionWebhook.Services.Discord
 
         /// <summary>Sends a new message to the Discord Webhook</summary>
         /// <returns>The messageId</returns>
-        public async Task<ulong> SendMessage(string? text, bool isTTS = false, IEnumerable<Embed> embeds = null)
+        public async Task<ulong> SendMessageAsync(string? text, bool isTTS = false, IEnumerable<Embed> embeds = null)
         {
-            _client = new(Url);
+            _client = new(_webhookUrl);
             return await _client.SendMessageAsync(text, isTTS, embeds);
         }
 
         /// <inheritdoc cref="DiscordWebhookClient.DeleteMessageAsync(ulong, Discord.RequestOptions)"/>
-        public async void DeleteMessage(ulong messageId)
+        public async Task DeleteMessageAsync(ulong messageId)
         {
-            _client = new(Url);
+            _client = new(_webhookUrl);
             await _client.DeleteMessageAsync(messageId);
         }
     }
