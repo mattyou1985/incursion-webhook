@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using IncursionWebhook.Services.Discord;
+using Microsoft.OpenApi.Models;
 
 namespace IncursionWebhook
 {
@@ -16,6 +17,9 @@ namespace IncursionWebhook
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            // Custom services
+            services.AddDiscordWebhook();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -27,6 +31,8 @@ namespace IncursionWebhook
             }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
