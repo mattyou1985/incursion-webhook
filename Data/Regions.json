@@ -1,0 +1,450 @@
+[
+  {
+    "Id": 10000001,
+    "Name": "Derelik"
+  },
+  {
+    "Id": 10000002,
+    "Name": "The Forge"
+  },
+  {
+    "Id": 10000003,
+    "Name": "Vale of the Silent"
+  },
+  {
+    "Id": 10000004,
+    "Name": "UUA-F4"
+  },
+  {
+    "Id": 10000005,
+    "Name": "Detorid"
+  },
+  {
+    "Id": 10000006,
+    "Name": "Wicked Creek"
+  },
+  {
+    "Id": 10000007,
+    "Name": "Cache"
+  },
+  {
+    "Id": 10000008,
+    "Name": "Scalding Pass"
+  },
+  {
+    "Id": 10000009,
+    "Name": "Insmother"
+  },
+  {
+    "Id": 10000010,
+    "Name": "Tribute"
+  },
+  {
+    "Id": 10000011,
+    "Name": "Great Wildlands"
+  },
+  {
+    "Id": 10000012,
+    "Name": "Curse"
+  },
+  {
+    "Id": 10000013,
+    "Name": "Malpais"
+  },
+  {
+    "Id": 10000014,
+    "Name": "Catch"
+  },
+  {
+    "Id": 10000015,
+    "Name": "Venal"
+  },
+  {
+    "Id": 10000016,
+    "Name": "Lonetrek"
+  },
+  {
+    "Id": 10000017,
+    "Name": "J7HZ-F"
+  },
+  {
+    "Id": 10000018,
+    "Name": "The Spire"
+  },
+  {
+    "Id": 10000019,
+    "Name": "A821-A"
+  },
+  {
+    "Id": 10000020,
+    "Name": "Tash-Murkon"
+  },
+  {
+    "Id": 10000021,
+    "Name": "Outer Passage"
+  },
+  {
+    "Id": 10000022,
+    "Name": "Stain"
+  },
+  {
+    "Id": 10000023,
+    "Name": "Pure Blind"
+  },
+  {
+    "Id": 10000025,
+    "Name": "Immensea"
+  },
+  {
+    "Id": 10000027,
+    "Name": "Etherium Reach"
+  },
+  {
+    "Id": 10000028,
+    "Name": "Molden Heath"
+  },
+  {
+    "Id": 10000029,
+    "Name": "Geminate"
+  },
+  {
+    "Id": 10000030,
+    "Name": "Heimatar"
+  },
+  {
+    "Id": 10000031,
+    "Name": "Impass"
+  },
+  {
+    "Id": 10000032,
+    "Name": "Sinq Laison"
+  },
+  {
+    "Id": 10000033,
+    "Name": "The Citadel"
+  },
+  {
+    "Id": 10000034,
+    "Name": "The Kalevala Expanse"
+  },
+  {
+    "Id": 10000035,
+    "Name": "Deklein"
+  },
+  {
+    "Id": 10000036,
+    "Name": "Devoid"
+  },
+  {
+    "Id": 10000037,
+    "Name": "Everyshore"
+  },
+  {
+    "Id": 10000038,
+    "Name": "The Bleak Lands"
+  },
+  {
+    "Id": 10000039,
+    "Name": "Esoteria"
+  },
+  {
+    "Id": 10000040,
+    "Name": "Oasa"
+  },
+  {
+    "Id": 10000041,
+    "Name": "Syndicate"
+  },
+  {
+    "Id": 10000042,
+    "Name": "Metropolis"
+  },
+  {
+    "Id": 10000043,
+    "Name": "Domain"
+  },
+  {
+    "Id": 10000044,
+    "Name": "Solitude"
+  },
+  {
+    "Id": 10000045,
+    "Name": "Tenal"
+  },
+  {
+    "Id": 10000046,
+    "Name": "Fade"
+  },
+  {
+    "Id": 10000047,
+    "Name": "Providence"
+  },
+  {
+    "Id": 10000048,
+    "Name": "Placid"
+  },
+  {
+    "Id": 10000049,
+    "Name": "Khanid"
+  },
+  {
+    "Id": 10000050,
+    "Name": "Querious"
+  },
+  {
+    "Id": 10000051,
+    "Name": "Cloud Ring"
+  },
+  {
+    "Id": 10000052,
+    "Name": "Kador"
+  },
+  {
+    "Id": 10000053,
+    "Name": "Cobalt Edge"
+  },
+  {
+    "Id": 10000054,
+    "Name": "Aridia"
+  },
+  {
+    "Id": 10000055,
+    "Name": "Branch"
+  },
+  {
+    "Id": 10000056,
+    "Name": "Feythabolis"
+  },
+  {
+    "Id": 10000057,
+    "Name": "Outer Ring"
+  },
+  {
+    "Id": 10000058,
+    "Name": "Fountain"
+  },
+  {
+    "Id": 10000059,
+    "Name": "Paragon Soul"
+  },
+  {
+    "Id": 10000060,
+    "Name": "Delve"
+  },
+  {
+    "Id": 10000061,
+    "Name": "Tenerifis"
+  },
+  {
+    "Id": 10000062,
+    "Name": "Omist"
+  },
+  {
+    "Id": 10000063,
+    "Name": "Period Basis"
+  },
+  {
+    "Id": 10000064,
+    "Name": "Essence"
+  },
+  {
+    "Id": 10000065,
+    "Name": "Kor-Azor"
+  },
+  {
+    "Id": 10000066,
+    "Name": "Perrigen Falls"
+  },
+  {
+    "Id": 10000067,
+    "Name": "Genesis"
+  },
+  {
+    "Id": 10000068,
+    "Name": "Verge Vendor"
+  },
+  {
+    "Id": 10000069,
+    "Name": "Black Rise"
+  },
+  {
+    "Id": 10000070,
+    "Name": "Pochven"
+  },
+  {
+    "Id": 11000001,
+    "Name": "A-R00001"
+  },
+  {
+    "Id": 11000002,
+    "Name": "A-R00002"
+  },
+  {
+    "Id": 11000003,
+    "Name": "A-R00003"
+  },
+  {
+    "Id": 11000004,
+    "Name": "B-R00004"
+  },
+  {
+    "Id": 11000005,
+    "Name": "B-R00005"
+  },
+  {
+    "Id": 11000006,
+    "Name": "B-R00006"
+  },
+  {
+    "Id": 11000007,
+    "Name": "B-R00007"
+  },
+  {
+    "Id": 11000008,
+    "Name": "B-R00008"
+  },
+  {
+    "Id": 11000009,
+    "Name": "C-R00009"
+  },
+  {
+    "Id": 11000010,
+    "Name": "C-R00010"
+  },
+  {
+    "Id": 11000011,
+    "Name": "C-R00011"
+  },
+  {
+    "Id": 11000012,
+    "Name": "C-R00012"
+  },
+  {
+    "Id": 11000013,
+    "Name": "C-R00013"
+  },
+  {
+    "Id": 11000014,
+    "Name": "C-R00014"
+  },
+  {
+    "Id": 11000015,
+    "Name": "C-R00015"
+  },
+  {
+    "Id": 11000016,
+    "Name": "D-R00016"
+  },
+  {
+    "Id": 11000017,
+    "Name": "D-R00017"
+  },
+  {
+    "Id": 11000018,
+    "Name": "D-R00018"
+  },
+  {
+    "Id": 11000019,
+    "Name": "D-R00019"
+  },
+  {
+    "Id": 11000020,
+    "Name": "D-R00020"
+  },
+  {
+    "Id": 11000021,
+    "Name": "D-R00021"
+  },
+  {
+    "Id": 11000022,
+    "Name": "D-R00022"
+  },
+  {
+    "Id": 11000023,
+    "Name": "D-R00023"
+  },
+  {
+    "Id": 11000024,
+    "Name": "E-R00024"
+  },
+  {
+    "Id": 11000025,
+    "Name": "E-R00025"
+  },
+  {
+    "Id": 11000026,
+    "Name": "E-R00026"
+  },
+  {
+    "Id": 11000027,
+    "Name": "E-R00027"
+  },
+  {
+    "Id": 11000028,
+    "Name": "E-R00028"
+  },
+  {
+    "Id": 11000029,
+    "Name": "E-R00029"
+  },
+  {
+    "Id": 11000030,
+    "Name": "F-R00030"
+  },
+  {
+    "Id": 11000031,
+    "Name": "G-R00031"
+  },
+  {
+    "Id": 11000032,
+    "Name": "H-R00032"
+  },
+  {
+    "Id": 11000033,
+    "Name": "K-R00033"
+  },
+  {
+    "Id": 12000001,
+    "Name": "ADR01"
+  },
+  {
+    "Id": 12000002,
+    "Name": "ADR02"
+  },
+  {
+    "Id": 12000003,
+    "Name": "ADR03"
+  },
+  {
+    "Id": 12000004,
+    "Name": "ADR04"
+  },
+  {
+    "Id": 12000005,
+    "Name": "ADR05"
+  },
+  {
+    "Id": 13000001,
+    "Name": "No Name"
+  },
+  {
+    "Id": 14000001,
+    "Name": "VR-01"
+  },
+  {
+    "Id": 14000002,
+    "Name": "VR-02"
+  },
+  {
+    "Id": 14000003,
+    "Name": "VR-03"
+  },
+  {
+    "Id": 14000004,
+    "Name": "VR-04"
+  },
+  {
+    "Id": 14000005,
+    "Name": "VR-05"
+  }
+]

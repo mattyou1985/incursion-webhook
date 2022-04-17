@@ -30,7 +30,7 @@ namespace IncursionWebhook.Services.Redis
         public async Task Delete(string key)
         {
             IDatabase db = _client.GetDatabase();
-            await db.StringGetDeleteAsync(key);
+            await db.KeyDeleteAsync(key);
         }
 
         /// <inheritdoc cref="IRedis.Get{T}(string)"/>
