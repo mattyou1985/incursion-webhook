@@ -21,5 +21,11 @@
                 $"<t:{unixTimestamp}:R>"
             );
         }
+
+        /// <summary>Replace spaces in URLs with an underscore</summary>
+        public static string DotlanSafe(this string s)
+        {
+            return s.Replace(" ", "_");
+        }
     }
 }
