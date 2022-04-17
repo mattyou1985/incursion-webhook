@@ -53,9 +53,7 @@ namespace IncursionWebhook.Jobs
             {
                 if(!esiIncursions.Any(c => c.ConstellationId == incursion.ConstellationId))
                 {
-                    // todo: Consider passing {incursion} so we can state which spawn is down
-                    _logger.LogInformation($"Incursion in {{constellation name}} down");
-                    _queue.QueueInvocable<IncursionSpawnDown>();
+                    _queue.QueueInvocableWithPayload<IncursionSpawnDown, EsiIncursion>(incursion);
                 }
             }
 

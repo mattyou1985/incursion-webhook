@@ -56,7 +56,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnMobilizing"/>
+        /// <inheritdoc cref="IWebhookClient.SpawnMobilizing(EsiIncursion)"/>
         public async Task SpawnMobilizing(EsiIncursion incursion)
         {
             DateTime now = DateTime.Now;
@@ -82,7 +82,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing"/>
+        /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing(EsiIncursion)"/>
         public async Task SpawnWithdrawing(EsiIncursion incursion)
         {
             DateTime now = DateTime.Now;
@@ -108,15 +108,15 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnDownAsync"/>
-        public async Task SpawnDownAsync()
+        /// <inheritdoc cref="IWebhookClient.SpawnDownAsync(string)"/>
+        public async Task SpawnDownAsync(string constellationName)
         {
             DateTime now = DateTime.UtcNow;
 
             EmbedBuilder embed = new()
             {
                 Color = Color.DarkGrey,
-                Title = "Spawn Down."
+                Title = $"Incursion in {constellationName} is Over."
             };
 
             embed.AddField("Spawn Window Opens:", now.AddHours(12).DiscordTimestamps(), true);

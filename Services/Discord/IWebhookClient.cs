@@ -30,6 +30,6 @@ namespace IncursionWebhook.Services.Discord
         Task SpawnWithdrawing(EsiIncursion incursion);
 
         /// <summary>Create the <em>Spawn Down</em> message</summary>
-        Task SpawnDownAsync();
+        Task SpawnDownAsync(string constellationName);
     }
 }
