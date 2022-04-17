@@ -39,16 +39,23 @@ namespace IncursionWebhook.Services.Discord
             {
                 return BadRequest($"Webhook {newWebhook?.Id} already in DB");
             }
+            
+            // We need to set the URL here so it is avaliable
+            // when we want to make HTTP calls via the Discord API
+            newWebhook.WebhookUrl = webhookUrl.ToString();
 
+            // Add the new webhook to REDIS
             webhooks.Add(newWebhook);
             await _redis.Set("discord-webhooks", webhooks);
-            return Ok();
+
+            // Return result
+            return Created(Url.Action("Index"), newWebhook);
         }
 
         /// <summary>Delete a specific Discord Webhook</summary>
         /// <param name="id">\\\todo</param>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(ulong id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks") ?? new();
             DiscordWebhook? webhook = webhooks.FirstOrDefault(x => x.Id == id);

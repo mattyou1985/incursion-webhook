@@ -1,4 +1,6 @@
-﻿namespace IncursionWebhook.Services.Discord
+﻿using IncursionWebhook.Services.EveSwagger.Models;
+
+namespace IncursionWebhook.Services.Discord
 {
     public interface IWebhookClient
     {
@@ -17,7 +19,7 @@
         /// 1. Change {{constellation}} to Incursion.Constellation.Name <br/>
         /// 2. Change the colour of the embed dynamically based on sec status
         /// </remarks>
-        Task SpawnMobilizing();
+        Task SpawnMobilizing(EsiIncursion incursion);
 
         /// <summary>Create the <em>Spawn Withdrawing</em> message</summary>
         /// <remarks>
@@ -25,7 +27,7 @@
         /// 1. Change {{constellation}} to Incursion.Constellation.Name <br/>
         /// 2. Change the colour of the embed dynamically based on sec status
         /// </remarks>
-        Task SpawnWithdrawing();
+        Task SpawnWithdrawing(EsiIncursion incursion);
 
         /// <summary>Create the <em>Spawn Down</em> message</summary>
         Task SpawnDownAsync();

@@ -12,11 +12,9 @@ namespace IncursionWebhook.Services.Discord
         private DiscordWebhookClient _client;
 
         /// <summary>Discord Webhook ID</summary>
-        [Key]
-        public ulong Id { get; set; }
+        public string Id { get; set; }
 
-        private string _webhookUrl;
-        public string WebhookUrl { set => _webhookUrl = value; }
+        public string WebhookUrl { get; set; }
 
 
         #region Webhook User Information
@@ -47,14 +45,14 @@ namespace IncursionWebhook.Services.Discord
         /// <returns>The messageId</returns>
         public async Task<ulong> SendMessageAsync(string? text, bool isTTS = false, IEnumerable<Embed> embeds = null)
         {
-            _client = new(_webhookUrl);
+            _client = new(WebhookUrl);
             return await _client.SendMessageAsync(text, isTTS, embeds);
         }
 
         /// <inheritdoc cref="DiscordWebhookClient.DeleteMessageAsync(ulong, Discord.RequestOptions)"/>
         public async Task DeleteMessageAsync(ulong messageId)
         {
-            _client = new(_webhookUrl);
+            _client = new(WebhookUrl);
             await _client.DeleteMessageAsync(messageId);
         }
     }

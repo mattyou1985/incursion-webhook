@@ -25,7 +25,7 @@ namespace IncursionWebhook.Services.EveSwagger.Attributes
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.ToString());
+            writer.WriteValue(value?.ToString()?.ToLower());
         }
     }
 }

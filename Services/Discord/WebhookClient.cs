@@ -1,4 +1,6 @@
 ﻿using Discord;
+using IncursionWebhook.Models;
+using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 using Newtonsoft.Json;
 
@@ -55,21 +57,22 @@ namespace IncursionWebhook.Services.Discord
         }
 
         /// <inheritdoc cref="IWebhookClient.SpawnMobilizing"/>
-        public async Task SpawnMobilizing() // take in an Incursion
+        public async Task SpawnMobilizing(EsiIncursion incursion)
         {
             DateTime now = DateTime.Now;
+            Constellation constellation = await _redis.Get<Constellation>($"constellation:{incursion.ConstellationId}");
 
             EmbedBuilder embed = new()
             {
                 Color = Utils.SecStatusColor(-0.2),// make this dynamic based on sec status
-                Title = $"{{constellation}} is Mobilizing."
+                Title = $"Incursion in {constellation.Name ?? "Unknown"} is Mobilizing.",
             };
 
-            embed.AddField("Estimated Despawn:", now.AddDays(2).DiscordTimestamps());
+            embed.AddField("Estimated Despawn:", now.AddDays(3).DiscordTimestamps());
             embed.AddField("Estimated Spawn Window", 
                 string.Format("{0} - {1}",
-                    now.AddDays(2).AddHours(12).DiscordTimestamps(false),
-                    now.AddDays(2).AddHours(36).DiscordTimestamps(false)
+                    now.AddDays(3).AddHours(12).DiscordTimestamps(false),
+                    now.AddDays(3).AddHours(36).DiscordTimestamps(false)
                 )
             );
 
@@ -80,14 +83,15 @@ namespace IncursionWebhook.Services.Discord
         }
 
         /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing"/>
-        public async Task SpawnWithdrawing() // take in an Incursion
+        public async Task SpawnWithdrawing(EsiIncursion incursion)
         {
             DateTime now = DateTime.Now;
+            Constellation constellation = await _redis.Get<Constellation>($"constellation:{incursion.ConstellationId}");
 
             EmbedBuilder embed = new()
             {
                 Color = Utils.SecStatusColor(-0.2),// make this dynamic based on sec status
-                Title = $"{{constellation}} is Withdrawing."
+                Title = $"Incursion in {constellation.Name ?? "Unknown"} is Withdrawing."
             };
 
             embed.AddField("Estimated Despawn:", now.AddDays(2).DiscordTimestamps());

@@ -1,3 +1,7 @@
+using Coravel;
+using IncursionWebhook.Jobs;
+using IncursionWebhook.Services.Redis;
+
 namespace IncursionWebhook
 {
     public class Program
@@ -7,11 +11,32 @@ namespace IncursionWebhook
             IHost host = CreateHostBuilder(args).Build();
 
             #region Seed Database
-            // TODO: Use Redis or SQL?  | Seed DB with universe information (Systems, Constellations, Regions)
+            using (var scope = host.Services.CreateScope())
+            {
+                IServiceProvider? services = scope.ServiceProvider;
+                try
+                {
+                    IRedis? redis = services.GetRequiredService<IRedis>();
+                    await DbSeeder.InitializeAsync(redis);
+                }
+                catch (Exception ex)
+                {
+                    ILogger? logger = services.GetRequiredService<ILogger>();
+                    logger.LogError(ex, "An error occured while creating the database");
+                }
+            }
             #endregion
 
             #region Scheduler
-            // TODO: Add Coravel
+            host.Services.UseScheduler(scheduler =>
+            {
+                scheduler.Schedule<FetchIncursions>()
+                    .EveryMinute()
+                    .RunOnceAtStart()
+                    .PreventOverlapping("fetchIncursions");
+
+                // todo: fetch killmails
+            });
             #endregion
 
             await host.RunAsync();
