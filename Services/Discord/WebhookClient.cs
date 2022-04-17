@@ -1,15 +1,16 @@
 ﻿using Discord;
+using IncursionWebhook.Services.Redis;
 using Newtonsoft.Json;
 
 namespace IncursionWebhook.Services.Discord
 {
     public class WebhookClient : IWebhookClient
     {
-        private readonly List<DiscordWebhook> _webhooks = new();
+        private readonly IRedis _redis;
 
-        public WebhookClient()
+        public WebhookClient(IRedis redis)
         {
-            // We need to get a list of all webhooks and store it in the property above
+            _redis = redis;
         }
 
         /// <inheritdoc cref="IWebhookClient.SpawnDetected"/>
@@ -47,7 +48,7 @@ namespace IncursionWebhook.Services.Discord
             // • "Unknown Systems: <csv list>
             embed.AddField("Remarks:", "n/a");
 
-            foreach (DiscordWebhook? webhook in _webhooks)
+            foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }
@@ -72,7 +73,7 @@ namespace IncursionWebhook.Services.Discord
                 )
             );
 
-            foreach (DiscordWebhook? webhook in _webhooks)
+            foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }
@@ -97,7 +98,7 @@ namespace IncursionWebhook.Services.Discord
                 )
             );
 
-            foreach (DiscordWebhook? webhook in _webhooks)
+            foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }
@@ -117,7 +118,7 @@ namespace IncursionWebhook.Services.Discord
             embed.AddField("Spawn Window Opens:", now.AddHours(12).DiscordTimestamps(), true);
             embed.AddField("Spawn Window Closes:", now.AddHours(36).DiscordTimestamps(), true);
 
-            foreach (DiscordWebhook? webhook in _webhooks)
+            foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }

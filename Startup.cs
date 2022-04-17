@@ -1,5 +1,5 @@
 ﻿using IncursionWebhook.Services.Discord;
-using Microsoft.OpenApi.Models;
+using IncursionWebhook.Services.Redis;
 
 namespace IncursionWebhook
 {
@@ -20,6 +20,7 @@ namespace IncursionWebhook
 
             // Custom services
             services.AddDiscordWebhook();
+            services.AddRedis();
         }
 
         public void Configure(IApplicationBuilder app)

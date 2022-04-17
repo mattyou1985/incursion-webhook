@@ -2,7 +2,7 @@
 {
     public static class DiscordExtensions
     {
-        /// <summary>Adds a DiscordWebhook to the <see cref="IServiceCollection"/></summary>
+        /// <summary>Adds a DiscordWebhook Service to the <see cref="IServiceCollection"/></summary>
         public static void AddDiscordWebhook(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IWebhookClient, WebhookClient>();

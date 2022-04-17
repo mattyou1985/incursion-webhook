@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#pragma warning disable CS8604 // Possible null reference argument.
+using IncursionWebhook.Services.Redis;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IncursionWebhook.Services.Discord
 {
@@ -6,48 +8,54 @@ namespace IncursionWebhook.Services.Discord
     public class DiscordWebhookController : ControllerBase
     {
         private readonly IWebhookClient _webhookClient;
-        private readonly List<DiscordWebhook> _webhooks = new();
+        private readonly IRedis _redis;
 
-        public DiscordWebhookController(IWebhookClient webhookClient)
+        public DiscordWebhookController(IWebhookClient webhookClient, IRedis redis)
         {
             _webhookClient = webhookClient;
+            _redis = redis;
         }
 
         /// <summary>List avaliable webhooks</summary>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Ok(_webhooks);
+            List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks");
+            return Ok(webhooks);
         }
 
         /// <summary>Create a new Discord Webhook</summary>
         [HttpPost]
-        public async Task<IActionResult> Index(Uri webhookUrl)
+        public async Task<IActionResult> Index(Uri webhookUrl, DiscordWebhook? webhook)
         {
-            if (!_webhookClient.TryCreate(webhookUrl, out DiscordWebhook? webhook, out string? error))
+            if (!_webhookClient.TryCreate(webhookUrl, out DiscordWebhook? newWebhook, out string? error))
             {
                 return BadRequest(error);
             }
 
-            if (_webhooks.Any(x => x.Id == webhook.Id))
+            List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks") ?? new();
+
+            if (webhooks.Any(x => x.Id == newWebhook?.Id))
             {
-                return BadRequest($"Webhook {webhook.Id} already in DB");
+                return BadRequest($"Webhook {newWebhook?.Id} already in DB");
             }
 
-            _webhooks.Add(webhook);
-            return Ok(webhook);
+            webhooks.Add(newWebhook);
+            await _redis.Set("discord-webhooks", webhooks);
+            return Ok();
         }
 
         /// <summary>Delete a specific Discord Webhook</summary>
         /// <param name="id">\\\todo</param>
         [HttpDelete("{id}")]
-        public IActionResult Delete(ulong id)
+        public async Task<IActionResult> DeleteAsync(ulong id)
         {
-            DiscordWebhook? webhook = _webhooks.FirstOrDefault(x => x.Id == id);
+            List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks") ?? new();
+            DiscordWebhook? webhook = webhooks.FirstOrDefault(x => x.Id == id);
             if (webhook == null) return NotFound();
-
-            _webhooks.Remove(webhook);
+            await _redis.Delete("discord-webhooks");
             return Ok();
         }
     }
 }
+#pragma warning restore CS8604
