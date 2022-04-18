@@ -1,6 +1,5 @@
 ﻿using Discord;
 using IncursionWebhook.Models;
-using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 using Newtonsoft.Json;
 
@@ -15,62 +14,76 @@ namespace IncursionWebhook.Services.Discord
             _redis = redis;
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnDetected"/>
-        public async Task SpawnDetected() // take in an Incursion
+        /// <inheritdoc cref="IWebhookClient.SpawnDetected(Region, Constellation, SolarSystem, SolarSystem, List{SolarSystem}, List{SolarSystem})"/>
+        public async Task SpawnDetected(Region region, Constellation constellation, SolarSystem HQs, SolarSystem Staging, List<SolarSystem> Assaults, List<SolarSystem> VGs)
         {
             EmbedBuilder embed = new()
             {
-                Title = "New {{sector}} Spawn!",
-                Color = Utils.SecStatusColor(-0.2), // make this dynamic based on sec status
-                Description = string.Format("{0} < {1}",
-                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Sinq Laison", "Wyllequet"), "Wyllequet"),
-                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Sinq Laison"), "Sinq Laison")
+                Title = $"New {(HQs ?? Staging).Security} Spawn!",
+                Color = Utils.SecStatusColor((HQs ?? Staging).SecurityStatus),
+                Description = string.Format("In {0}, {1}", 
+                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, constellation.Name), constellation.Name),
+                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name), region.Name)
                 )
             };
 
             // List system(s) HQ, Assaults and VGs
-            embed.AddField("Headquarters", string.Format("{0} ({1}AU, {2:0f}sec)",
-                Utils.MarkdownUrl(Utils.DotlanUniverseUrl("The Forge", "Jita"), "Jita"), 91, 0.5), true
-            );
-            embed.AddField("Assaults", Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Heimatar", "Rens"), "Rens"), true);
-            embed.AddField("Vanguards", Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Heimatar", "Rens"), "Rens") + "\n" +
-                Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Heimatar", "Rens"), "Rens") + "\n" +
-                Utils.MarkdownUrl(Utils.DotlanUniverseUrl("Heimatar", "Rens"), "Rens"), true
-            );
+            if (HQs is not null)
+            {
+                embed.AddField("Headquarters",
+                    string.Format("{0} ({1}sec)", Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, HQs.Name), HQs.Name), HQs.SecurityStatus), true);
+            }
 
-            // Closest Hub
-            embed.AddField($"Closest Hub: {{system name}}", string.Format("  • {0} (Safest)\n  • {1} (Shortest)",
-                Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps"),
-                Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps")
-            ));
+            if (Assaults is not null && Assaults.Count != 0)
+            {
+                embed.AddField("Assaults",
+                    string.Join("\n", Assaults.Select(s =>
+                        Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, s.Name), s.Name))
+                    ),
+                    true
+                );
+            }
 
-            // Remarks - this could include
-            // • "No stations in HQ"
-            // • "Island Spawn"
-            // • "Unknown Systems: <csv list>
+            if (VGs is not null && VGs.Count != 0)
+            {
+                embed.AddField("Vanguards",
+                    string.Join("\n", VGs.Select(s =>
+                        Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, s.Name), s.Name))
+                    ),
+                    true
+                );
+            }
+
+
+            //// Closest Hub
+            //embed.AddField($"Closest Hub: {{system name}}", string.Format("  • {0} (Safest)\n  • {1} (Shortest)",
+            //    Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps"),
+            //    Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps")
+            //));
+
+            // Remarks - this could include: "No stations in HQ", "Island", "Unknown Systems <csv list>"
             embed.AddField("Remarks:", "n/a");
 
             foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
+                
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnMobilizing(EsiIncursion)"/>
-        public async Task SpawnMobilizing(EsiIncursion incursion)
+        /// <inheritdoc cref="IWebhookClient.SpawnMobilizing(string, SolarSystem)"/>
+        public async Task SpawnMobilizing(string constellationName, SolarSystem system)
         {
             DateTime now = DateTime.Now;
-            Constellation constellation = await _redis.Get<Constellation>($"constellation:{incursion.ConstellationId}");
 
             EmbedBuilder embed = new()
             {
-                Color = Utils.SecStatusColor(-0.2),// make this dynamic based on sec status
-                Title = $"Incursion in {constellation.Name ?? "Unknown"} is Mobilizing.",
+                Color = Utils.SecStatusColor(system.SecurityStatus),
+                Title = $"Incursion in {constellationName} is Mobilizing.",
             };
 
             embed.AddField("Estimated Despawn:", now.AddDays(3).DiscordTimestamps());
-            embed.AddField("Estimated Spawn Window", 
-                string.Format("{0} - {1}",
+            embed.AddField("Estimated Spawn Window", string.Format("{0} - {1}",
                     now.AddDays(3).AddHours(12).DiscordTimestamps(false),
                     now.AddDays(3).AddHours(36).DiscordTimestamps(false)
                 )
@@ -82,21 +95,20 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing(EsiIncursion)"/>
-        public async Task SpawnWithdrawing(EsiIncursion incursion)
+        /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing(string, SolarSystem)"/>
+        public async Task SpawnWithdrawing(string constellationName, SolarSystem system)
         {
             DateTime now = DateTime.Now;
-            Constellation constellation = await _redis.Get<Constellation>($"constellation:{incursion.ConstellationId}");
 
             EmbedBuilder embed = new()
             {
-                Color = Utils.SecStatusColor(-0.2),// make this dynamic based on sec status
-                Title = $"Incursion in {constellation.Name ?? "Unknown"} is Withdrawing."
+                Color = Utils.SecStatusColor(system.SecurityStatus),
+                Title = $"Incursion in {constellationName} is Withdrawing.",
             };
 
             embed.AddField("Estimated Despawn:", now.AddDays(2).DiscordTimestamps());
-            embed.AddField("Estimated Spawn Window",
-                string.Format("{0} - {1}",
+
+            embed.AddField("Estimated Spawn Window", string.Format("{0} - {1}",
                     now.AddDays(1).AddHours(12).DiscordTimestamps(false),
                     now.AddDays(1).AddHours(36).DiscordTimestamps(false)
                 )

@@ -30,6 +30,7 @@ namespace IncursionWebhook
 
             // Add custom jobs
             services.AddTransient<FetchIncursions>();
+            services.AddTransient<IncursionSpawned>();
             services.AddTransient<IncursionSpawnDown>();
             services.AddTransient<IncursionStateChange>();
         }

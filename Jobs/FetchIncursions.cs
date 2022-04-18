@@ -36,7 +36,7 @@ namespace IncursionWebhook.Jobs
                 // queue the NewIncursion invocable so that we can build the information required for the ping
                 if (res is null)
                 {
-                    //todo: Queue NewIncursionJob
+                    _queue.QueueInvocableWithPayload<IncursionSpawned, EsiIncursion>(incursion);
                     continue;
                 }
 

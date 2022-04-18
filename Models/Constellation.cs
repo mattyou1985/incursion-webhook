@@ -4,8 +4,8 @@ namespace IncursionWebhook.Models
     public class Constellation
     {
         public int Id { get; set; }
-
         public string Name { get; set; }
+        public int RegionId { get; set; }
     }
 }
 #pragma warning restore CS8618

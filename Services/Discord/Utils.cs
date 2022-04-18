@@ -24,6 +24,8 @@ namespace IncursionWebhook.Services.Discord
         /// <remarks>see: https://web.archive.org/web/20120219150840/http://blog.evepanel.net/eve-online/igb/colors-of-the-security-status.html</remarks>
         public static Color SecStatusColor (this double secStatus)
         {
+            secStatus = Double.Parse(secStatus.ToString("0.0"));
+
             return secStatus switch
             {
                 1.0 => new Color(47, 239, 239),

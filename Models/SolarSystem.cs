@@ -11,7 +11,7 @@ namespace IncursionWebhook.Services.Redis
         [JsonProperty("SecurityStatus")]
         public double TrueSecurityStatus { get; set; }
 
-        public Type SiteType { get; set; } = Type.None;
+        public SiteType SiteType { get; set; } = SiteType.None;
         
         [JsonIgnore]
         public float SecurityStatus
@@ -24,7 +24,7 @@ namespace IncursionWebhook.Services.Redis
                     return (float)tmp / 100;
                 }
 
-                return (float)Math.Round(TrueSecurityStatus, 2);
+                return (float)Math.Round(TrueSecurityStatus, 1);
             }
         }
 
@@ -61,7 +61,7 @@ namespace IncursionWebhook.Services.Redis
         Unknown
     }
 
-    public enum Type
+    public enum SiteType
     {
         Headquarters,
         Assaults,
