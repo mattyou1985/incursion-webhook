@@ -18,6 +18,12 @@ namespace IncursionWebhook.Services.Redis
             {
                 redis.Set($"constellation:{constellation.Id}", constellation);
             });
+
+            List<SolarSystem> systems = JsonConvert.DeserializeObject<List<SolarSystem>>(File.ReadAllText("Data/Systems.json")) ?? new();
+            systems.ForEach(system =>
+            {
+                redis.Set($"system:{system.Id}", system);
+            });
         }
     }
 }
