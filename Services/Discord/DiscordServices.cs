@@ -66,7 +66,6 @@ namespace IncursionWebhook.Services.Discord
 
             foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
-                
                 await webhook.SendMessageAsync(null, embeds: new[] { embed.Build() });
             }
         }

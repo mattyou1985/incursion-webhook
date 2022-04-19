@@ -2,9 +2,9 @@
 {
     public enum RouteFlag
     {
-        Secure = 0,
-        Shortest = 1,
-        Insecure = 2
+        secure = 0,
+        shortest = 1,
+        insecure = 2
     }
 
     /// <summary>The incursion phase (established, mobo, etc.)</summary>
