@@ -10,16 +10,6 @@ namespace IncursionWebhook.Services.Discord
         /// <param name="text">The link text</param>
         public static string MarkdownUrl(string href, string text) => $"[{text}]({href})";
 
-        /// <summary>Creates a Dotlan Universe URL</summary>
-        /// <remarks>Constellation has priority over system. If both are provided the system will be omitted</remarks>
-        public static string DotlanUniverseUrl(string region, string? constellation = null, string? system = null)
-        {
-            string url = $"https://evemaps.dotlan.net/map/{region}";
-            if (!string.IsNullOrWhiteSpace(constellation)) return $"{url}/{constellation}".DotlanSafe();
-            if (!string.IsNullOrWhiteSpace(system)) return $"{url}/{system}".DotlanSafe();
-            return url.DotlanSafe();
-        }
-
         /// <summary>Get the color of a given system security status</summary>
         /// <remarks>see: https://web.archive.org/web/20120219150840/http://blog.evepanel.net/eve-online/igb/colors-of-the-security-status.html</remarks>
         public static Color SecStatusColor (this double secStatus)

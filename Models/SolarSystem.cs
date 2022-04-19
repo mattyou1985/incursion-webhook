@@ -50,7 +50,10 @@ namespace IncursionWebhook.Services.Redis
             }
         }
 
-
+        public string DotlanUrl(string regionName)
+        {
+            return $"https://evemaps.dotlan.net/map/{regionName}/{Name}".Replace(" ", "_");
+        }
     }
 
     public enum Security

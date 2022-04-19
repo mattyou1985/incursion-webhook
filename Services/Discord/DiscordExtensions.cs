@@ -15,11 +15,7 @@
             long unixTimestamp = (long)timestamp.Subtract(DateTime.UnixEpoch).TotalSeconds;
 
             if (!withDiffForHumans) return timestamp.ToString("dddd, HH:mm");
-
-            return string.Format("{0} ({1})",
-                timestamp.ToString("dddd, HH:mm"),
-                $"<t:{unixTimestamp}:R>"
-            );
+            return string.Format("{0} ({1})", timestamp.ToString("dddd, HH:mm"), $"<t:{unixTimestamp}:R>");
         }
 
         /// <summary>Replace spaces in URLs with an underscore</summary>

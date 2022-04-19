@@ -6,6 +6,11 @@ namespace IncursionWebhook.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int RegionId { get; set; }
+
+        public string DotlanUrl(string regionName)
+        {
+            return $"https://evemaps.dotlan.net/map/{regionName}/{Name}".Replace(" ", "_");
+        }
     }
 }
 #pragma warning restore CS8618

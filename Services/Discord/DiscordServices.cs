@@ -22,8 +22,8 @@ namespace IncursionWebhook.Services.Discord
                 Title = $"New {(HQs ?? Staging).Security} Spawn!",
                 Color = Utils.SecStatusColor((HQs ?? Staging).SecurityStatus),
                 Description = string.Format("In {0}, {1}", 
-                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, constellation.Name), constellation.Name),
-                    Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name), region.Name)
+                    Utils.MarkdownUrl(constellation.DotlanUrl(region.Name), constellation.Name),
+                    Utils.MarkdownUrl(region.DotlanUrl, region.Name)
                 )
             };
 
@@ -31,14 +31,14 @@ namespace IncursionWebhook.Services.Discord
             if (HQs is not null)
             {
                 embed.AddField("Headquarters",
-                    string.Format("{0} ({1}sec)", Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, HQs.Name), HQs.Name), HQs.SecurityStatus), true);
+                    string.Format("{0} ({1}sec)", Utils.MarkdownUrl(HQs.DotlanUrl(region.Name), HQs.Name), HQs.SecurityStatus), true);
             }
 
             if (Assaults is not null && Assaults.Count != 0)
             {
                 embed.AddField("Assaults",
                     string.Join("\n", Assaults.Select(s =>
-                        Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, s.Name), s.Name))
+                        Utils.MarkdownUrl(s.DotlanUrl(region.Name), s.Name))
                     ),
                     true
                 );
@@ -48,7 +48,7 @@ namespace IncursionWebhook.Services.Discord
             {
                 embed.AddField("Vanguards",
                     string.Join("\n", VGs.Select(s =>
-                        Utils.MarkdownUrl(Utils.DotlanUniverseUrl(region.Name, s.Name), s.Name))
+                        Utils.MarkdownUrl(s.DotlanUrl(region.Name), s.Name))
                     ),
                     true
                 );
