@@ -3,6 +3,7 @@ using IncursionWebhook.Jobs;
 using IncursionWebhook.Services.Discord;
 using IncursionWebhook.Services.EveSwagger;
 using IncursionWebhook.Services.Redis;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace IncursionWebhook
 {
@@ -37,11 +38,18 @@ namespace IncursionWebhook
 
         public void Configure(IApplicationBuilder app)
         {
+            // Enable reverse proxy to work
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
 
             app.UseHttpsRedirection();
             app.UseRouting();
