@@ -60,7 +60,10 @@ namespace IncursionWebhook.Services.Discord
             List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks") ?? new();
             DiscordWebhook? webhook = webhooks.FirstOrDefault(x => x.Id == id);
             if (webhook == null) return NotFound();
-            await _redis.Delete("discord-webhooks");
+            
+            webhooks.Remove(webhook);
+            await _redis.Set("discord-webhooks", webhooks);
+            
             return Ok();
         }
     }
