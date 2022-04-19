@@ -17,7 +17,6 @@ namespace IncursionWebhook.Services.Discord.Attributes
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            throw new NotImplementedException();
         }
     }
 }
