@@ -70,7 +70,9 @@ namespace IncursionWebhook.Services.EveSwagger
                 30002510   // Rens
             };
 
-            foreach(int systemId in hubs)
+            // Find the route to each trade hub,
+            // and keep the route to the closest hub
+            foreach (int systemId in hubs)
             {
                 var systems = await GetRouteAsync(originSystemId, systemId);
                 if (closest is null || systems.Count < closest.Count) closest = systems; 

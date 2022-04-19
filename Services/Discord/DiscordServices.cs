@@ -1,16 +1,21 @@
 ﻿using Discord;
 using IncursionWebhook.Models;
+using IncursionWebhook.Services.EveSwagger;
+using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace IncursionWebhook.Services.Discord
 {
     public class DiscordServices : IDiscordService
     {
+        private readonly IEveSwagger _esi;
         private readonly IRedis _redis;
 
-        public DiscordServices(IRedis redis)
+        public DiscordServices(IEveSwagger esi, IRedis redis)
         {
+            _esi = esi;
             _redis = redis;
         }
 
@@ -21,7 +26,7 @@ namespace IncursionWebhook.Services.Discord
             {
                 Title = $"New {(HQs ?? Staging).Security} Spawn!",
                 Color = Utils.SecStatusColor((HQs ?? Staging).SecurityStatus),
-                Description = string.Format("In {0}, {1}", 
+                Description = string.Format("In {0}, {1}",
                     Utils.MarkdownUrl(constellation.DotlanUrl(region.Name), constellation.Name),
                     Utils.MarkdownUrl(region.DotlanUrl, region.Name)
                 )
@@ -54,15 +59,37 @@ namespace IncursionWebhook.Services.Discord
                 );
             }
 
+            // Calculate the routing system
+            List<string> remarks = new();
 
-            //// Closest Hub
-            //embed.AddField($"Closest Hub: {{system name}}", string.Format("  • {0} (Safest)\n  • {1} (Shortest)",
-            //    Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps"),
-            //    Utils.MarkdownUrl("https://example.com", $"{{int}} Jumps")
-            //));
 
-            // Remarks - this could include: "No stations in HQ", "Island", "Unknown Systems <csv list>"
-            embed.AddField("Remarks:", "n/a");
+            SolarSystem hub = await _esi.FindClosestHub((HQs ?? Staging).Id);
+            if (hub is null) remarks.Add("Spawn is Unreachable");
+
+
+            List<SolarSystem> safest, shortest;
+
+            safest = await _esi.GetRouteAsync((HQs ?? Staging).Id, hub.Id);
+            if ((HQs ?? Staging).Security == Security.Highsec && safest.Any(c => c.SecurityStatus < 0.5))
+            {
+                remarks.Add("Island Spawn");
+            }
+            
+            StringBuilder sb = new();
+            sb.Append(string.Format("**{0} (Safest)** ", 
+                Utils.MarkdownUrl($"https://eve-gatecheck.space/eve/#{hub.Name}:{(HQs ?? Staging).Name}:secure", $"{safest.Count} Jumps")));
+
+
+            shortest = await _esi.GetRouteAsync((HQs ?? Staging).Id, hub.Id, RouteFlag.shortest);
+            if (!shortest.SequenceEqual(safest))
+            {
+                sb.Append(string.Format(" | *{0} (Shortest)*",
+                    Utils.MarkdownUrl($"https://eve-gatecheck.space/eve/#{hub.Name}:{(HQs ?? Staging).Name}:shortest", $"{shortest.Count} Jumps")));
+            }
+
+            embed.AddField($"Closest Hub: {hub.Name}", sb.ToString());
+            
+            embed.AddField("Remarks:", string.Join(", ",  remarks).AsNullIfEmpty() ?? "n/a");
 
             foreach (DiscordWebhook? webhook in await _redis.Get<List<DiscordWebhook>>("discord-webhooks"))
             {
