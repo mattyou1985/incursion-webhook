@@ -1,10 +1,11 @@
 ﻿#pragma warning disable CS8604 // Possible null reference argument.
+using IncursionWebhook.Services.Discord.Attributes;
 using IncursionWebhook.Services.Redis;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IncursionWebhook.Services.Discord
 {
-    [ApiController, Route("api/discord")]
+    [ApiController, DevelopmentOnly, Route("api/discord")]
     public class DiscordWebhookController : ControllerBase
     {
         private readonly IDiscordService _webhookClient;
