@@ -21,8 +21,9 @@ namespace IncursionWebhook
                 }
                 catch (Exception ex)
                 {
-                    ILogger? logger = services.GetRequiredService<ILogger>();
-                    logger.LogError(ex, "An error occured while creating the database");
+                    // Need to work out what I want to do here,
+                    // for now we shall re throw the error
+                    throw ex;
                 }
             }
             #endregion

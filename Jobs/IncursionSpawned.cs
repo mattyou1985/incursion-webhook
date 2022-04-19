@@ -64,10 +64,14 @@ namespace IncursionWebhook.Jobs
             {
                 Title = $"New {featuredSystem.Security} Spawn!",
                 Color = Utils.SecStatusColor(featuredSystem.SecurityStatus),
-                Description = string.Format("In **{0}**, {1}",
+                Description = string.Format("In {0} ({1})",
                     Utils.MarkdownUrl(constellation.DotlanUrl(region.Name), constellation.Name),
                     Utils.MarkdownUrl(region.DotlanUrl, region.Name)
-                )
+                ),
+                Footer = new()
+                {
+                    Text = $"Est despawn between {createdAt.AddDays(4).DiscordTimestamps(false)} and {createdAt.AddDays(8).DiscordTimestamps(false)}."
+                }
             };
 
             // List all of the systems by the site type
@@ -79,9 +83,9 @@ namespace IncursionWebhook.Jobs
                 StringBuilder sb = new();
                 foreach(SolarSystem system in systems[t])
                 {
-                    sb.AppendLine(string.Format("{0} ({1}sec)",
+                    sb.AppendLine(string.Format("{0} ({1} sec)",
                         Utils.MarkdownUrl(system.DotlanUrl(region.Name), system.Name),
-                        double.Parse(system.SecurityStatus.ToString("0.00"))
+                        system.SecurityStatus
                     ));
                 }
 
@@ -109,7 +113,7 @@ namespace IncursionWebhook.Jobs
                 shortest = await _esi.GetRouteAsync(featuredSystem.Id, hub.Id, RouteFlag.shortest);
                 if (!shortest.SequenceEqual(safest))
                 {
-                    sb.Append(string.Format(" | *{0} (Shortest)*",
+                    sb.Append(string.Format("\n *{0} (Shortest)*",
                         Utils.MarkdownUrl($"https://eve-gatecheck.space/eve/#{hub.Name}:{featuredSystem.Name}:shortest", $"{shortest.Count} Jumps")));
                 }
 

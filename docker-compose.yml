@@ -1,0 +1,22 @@
+services:
+  api:
+    image: ghcr.io/samuelgrant/incursion-webhook:latest
+    depends_on:
+      - "redis"
+    environment: 
+      REDIS_SERVER: "redis:6379"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    links:
+      - "redis"
+    ports:
+      - "8093:80"
+    
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - cache:/data
+
+volumes:
+  cache:
+    driver: local
