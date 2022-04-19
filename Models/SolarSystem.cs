@@ -11,6 +11,7 @@ namespace IncursionWebhook.Models
         [JsonProperty("SecurityStatus")]
         public double TrueSecurityStatus { get; set; }
 
+        [JsonConverter(typeof(SiteType))]
         public SiteType SiteType { get; set; } = SiteType.None;
         
         [JsonIgnore]
