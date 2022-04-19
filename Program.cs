@@ -31,7 +31,7 @@ namespace IncursionWebhook
             host.Services.UseScheduler(scheduler =>
             {
                 scheduler.Schedule<FetchIncursions>()
-                    .EveryMinute()
+                    .EveryFiveMinutes()
                     .RunOnceAtStart()
                     .PreventOverlapping("fetchIncursions");
 

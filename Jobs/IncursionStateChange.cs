@@ -9,12 +9,12 @@ namespace IncursionWebhook.Jobs
 {
     public class IncursionStateChange : IInvocable, IInvocableWithPayload<EsiIncursion>
     {
-        private readonly IWebhookClient _client;
+        private readonly IDiscordService _client;
         private readonly IRedis _redis;
 
         public EsiIncursion Payload { get; set; }
 
-        public IncursionStateChange(IRedis redis, IWebhookClient client)
+        public IncursionStateChange(IRedis redis, IDiscordService client)
         {
             _redis = redis;
             _client = client;

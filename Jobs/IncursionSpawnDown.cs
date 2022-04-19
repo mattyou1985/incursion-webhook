@@ -11,11 +11,11 @@ namespace IncursionWebhook.Jobs
     public class IncursionSpawnDown : IInvocable, IInvocableWithPayload<EsiIncursion>
     {
         private readonly IRedis _redis;
-        private readonly IWebhookClient _client;
+        private readonly IDiscordService _client;
 
         public EsiIncursion Payload { get; set; }
 
-        public IncursionSpawnDown(IRedis redis, IWebhookClient webhookClient)
+        public IncursionSpawnDown(IRedis redis, IDiscordService webhookClient)
         {
             _client = webhookClient;
             _redis = redis;

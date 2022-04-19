@@ -3,9 +3,9 @@
     public static class DiscordExtensions
     {
         /// <summary>Adds a DiscordWebhook Service to the <see cref="IServiceCollection"/></summary>
-        public static void AddDiscordWebhook(this IServiceCollection serviceCollection)
+        public static void AddDiscord(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IWebhookClient, WebhookClient>();
+            serviceCollection.AddSingleton<IDiscordService, DiscordServices>();
         }
 
         /// <summary>Returns a Discord timestamp string</summary>

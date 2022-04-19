@@ -5,16 +5,16 @@ using Newtonsoft.Json;
 
 namespace IncursionWebhook.Services.Discord
 {
-    public class WebhookClient : IWebhookClient
+    public class DiscordServices : IDiscordService
     {
         private readonly IRedis _redis;
 
-        public WebhookClient(IRedis redis)
+        public DiscordServices(IRedis redis)
         {
             _redis = redis;
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnDetected(Region, Constellation, SolarSystem, SolarSystem, List{SolarSystem}, List{SolarSystem})"/>
+        /// <inheritdoc cref="IDiscordService.SpawnDetected(Region, Constellation, SolarSystem, SolarSystem, List{SolarSystem}, List{SolarSystem})"/>
         public async Task SpawnDetected(Region region, Constellation constellation, SolarSystem HQs, SolarSystem Staging, List<SolarSystem> Assaults, List<SolarSystem> VGs)
         {
             EmbedBuilder embed = new()
@@ -71,7 +71,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnMobilizing(string, SolarSystem)"/>
+        /// <inheritdoc cref="IDiscordService.SpawnMobilizing(string, SolarSystem)"/>
         public async Task SpawnMobilizing(string constellationName, SolarSystem system)
         {
             DateTime now = DateTime.Now;
@@ -95,7 +95,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnWithdrawing(string, SolarSystem)"/>
+        /// <inheritdoc cref="IDiscordService.SpawnWithdrawing(string, SolarSystem)"/>
         public async Task SpawnWithdrawing(string constellationName, SolarSystem system)
         {
             DateTime now = DateTime.Now;
@@ -106,7 +106,7 @@ namespace IncursionWebhook.Services.Discord
                 Title = $"Incursion in {constellationName} is Withdrawing.",
             };
 
-            embed.AddField("Estimated Despawn:", now.AddDays(2).DiscordTimestamps());
+            embed.AddField("Estimated Despawn:", now.AddDays(1).DiscordTimestamps());
 
             embed.AddField("Estimated Spawn Window", string.Format("{0} - {1}",
                     now.AddDays(1).AddHours(12).DiscordTimestamps(false),
@@ -120,7 +120,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.SpawnDownAsync(string)"/>
+        /// <inheritdoc cref="IDiscordService.SpawnDownAsync(string)"/>
         public async Task SpawnDownAsync(string constellationName)
         {
             DateTime now = DateTime.UtcNow;
@@ -140,7 +140,7 @@ namespace IncursionWebhook.Services.Discord
             }
         }
 
-        /// <inheritdoc cref="IWebhookClient.TryCreate(Uri, out DiscordWebhook, out string?)"/>
+        /// <inheritdoc cref="IDiscordService.TryCreate(Uri, out DiscordWebhook, out string?)"/>
         public bool TryCreate(Uri webhookUrl, out DiscordWebhook? webhook, out string? error)
         {
             error = null;

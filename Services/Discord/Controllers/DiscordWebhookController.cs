@@ -7,10 +7,10 @@ namespace IncursionWebhook.Services.Discord
     [ApiController, Route("api/discord")]
     public class DiscordWebhookController : ControllerBase
     {
-        private readonly IWebhookClient _webhookClient;
+        private readonly IDiscordService _webhookClient;
         private readonly IRedis _redis;
 
-        public DiscordWebhookController(IWebhookClient webhookClient, IRedis redis)
+        public DiscordWebhookController(IDiscordService webhookClient, IRedis redis)
         {
             _webhookClient = webhookClient;
             _redis = redis;
@@ -26,7 +26,7 @@ namespace IncursionWebhook.Services.Discord
 
         /// <summary>Create a new Discord Webhook</summary>
         [HttpPost]
-        public async Task<IActionResult> Index(Uri webhookUrl, DiscordWebhook? webhook)
+        public async Task<IActionResult> Index([FromBody] Uri webhookUrl)
         {
             if (!_webhookClient.TryCreate(webhookUrl, out DiscordWebhook? newWebhook, out string? error))
             {

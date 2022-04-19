@@ -3,7 +3,7 @@ using IncursionWebhook.Services.Redis;
 
 namespace IncursionWebhook.Services.Discord
 {
-    public interface IWebhookClient
+    public interface IDiscordService
     {
         /// <summary>Attempt to connect to a Discord Webhook and retrieve its settings </summary>
         /// <param name="webhookUrl">The Webhook URL provided by Discord</param>
