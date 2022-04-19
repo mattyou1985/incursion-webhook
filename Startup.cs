@@ -24,7 +24,7 @@ namespace IncursionWebhook
             services.AddQueue();
 
             // Custom services
-            services.AddDiscordWebhook();
+            services.AddDiscord();
             services.AddEveSwagger();
             services.AddRedis();
 
