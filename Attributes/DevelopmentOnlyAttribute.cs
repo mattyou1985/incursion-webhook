@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
-namespace IncursionWebhook.Services.Discord.Attributes
+namespace IncursionWebhook.Attributes
 {
     [AttributeUsage(AttributeTargets.All)]
     public class DevelopmentOnlyAttribute : Attribute, IResourceFilter
@@ -27,3 +28,4 @@ namespace IncursionWebhook.Services.Discord.Attributes
         }
     }
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

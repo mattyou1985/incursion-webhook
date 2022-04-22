@@ -49,7 +49,6 @@ namespace IncursionWebhook.Services.Discord
             return await _client.SendMessageAsync(text, isTTS, embeds);
         }
 
-        /// <inheritdoc cref="DiscordWebhookClient.DeleteMessageAsync(ulong, Discord.RequestOptions)"/>
         public async Task DeleteMessageAsync(ulong messageId)
         {
             _client = new(WebhookUrl);

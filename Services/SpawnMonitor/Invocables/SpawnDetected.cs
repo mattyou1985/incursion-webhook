@@ -1,4 +1,6 @@
-﻿using Coravel.Invocable;
+﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+using Coravel.Invocable;
 using Discord;
 using IncursionWebhook.Models;
 using IncursionWebhook.Services.Discord;
@@ -7,20 +9,20 @@ using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 using System.Text;
 
-namespace IncursionWebhook.Jobs
+namespace IncursionWebhook.Services.SpawnMonitor.Invocables
 {
-    public class IncursionSpawned : IInvocable, IInvocableWithPayload<EsiIncursion>
+    public class SpawnDetected : IInvocable, IInvocableWithPayload<EsiIncursion>
     {
-        private readonly IDiscordService _client;
+        private readonly IDiscordService _discord;
         private readonly IEveSwagger _esi;
         private readonly IRedis _redis;
         private readonly DateTime createdAt;
 
         public EsiIncursion Payload { get; set; }
 
-        public IncursionSpawned(IEveSwagger esi, IRedis redis, IDiscordService webhookClient)
+        public SpawnDetected(IDiscordService discord, IEveSwagger esi, IRedis redis)
         {
-            _client = webhookClient;
+            _discord = discord;
             _esi = esi;
             _redis = redis;
 
@@ -33,11 +35,11 @@ namespace IncursionWebhook.Jobs
 
         public async Task Invoke()
         {
-            Constellation   constellation   = await _redis.Get<Constellation>($"constellation:{Payload.ConstellationId}");
-            Region          region          = await _redis.Get<Region>($"region:{constellation.RegionId}");
+            Constellation constellation = await _redis.Get<Constellation>($"constellation:{Payload.ConstellationId}");
+            Region region = await _redis.Get<Region>($"region:{constellation.RegionId}");
 
             // Build a map of infested systems
-            Dictionary<SiteType, List<SolarSystem>> systems = new() 
+            Dictionary<SiteType, List<SolarSystem>> systems = new()
             {
                 { SiteType.Headquarters, new() },
                 { SiteType.Assaults, new() },
@@ -45,7 +47,7 @@ namespace IncursionWebhook.Jobs
                 { SiteType.None, new() }
             };
 
-            foreach(int systemId in Payload.InfestedSolarSystems)
+            foreach (int systemId in Payload.InfestedSolarSystems)
             {
                 SolarSystem system = await _redis.Get<SolarSystem>($"system:{systemId}");
                 if (system.Id == Payload.StagingSystemId)
@@ -75,13 +77,13 @@ namespace IncursionWebhook.Jobs
             };
 
             // List all of the systems by the site type
-            foreach(SiteType t in  Enum.GetValues(typeof(SiteType)))
+            foreach (SiteType t in Enum.GetValues(typeof(SiteType)))
             {
                 // We do not want to display unknown types here
                 if (t == SiteType.None) continue;
 
                 StringBuilder sb = new();
-                foreach(SolarSystem system in systems[t])
+                foreach (SolarSystem system in systems[t])
                 {
                     sb.AppendLine(string.Format("{0} ({1} sec)",
                         Utils.MarkdownUrl(system.DotlanUrl(region.Name), system.Name),
@@ -126,10 +128,12 @@ namespace IncursionWebhook.Jobs
                 systems[SiteType.None].ForEach(system => sb.Append($"{Utils.MarkdownUrl(system.DotlanUrl(region.Name), system.Name)}, "));
                 remarks.Add($"\nUnknown: {sb.ToString().TrimEnd(',', ' ')}");
             }
-            
+
             embed.AddField("Remarks:", string.Join(", ", remarks).TrimStart('\n').AsNullIfEmpty() ?? "n/a");
 
-            await _client.IncursionSpawn(embed.Build());
+            await _discord.IncursionSpawn(embed.Build(), featuredSystem.Security);
         }
     }
 }
+#pragma warning restore CS8602
+#pragma warning restore CS8618
