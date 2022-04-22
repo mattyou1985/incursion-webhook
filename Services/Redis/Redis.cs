@@ -6,7 +6,7 @@ namespace IncursionWebhook.Services.Redis
 {
     public class Redis : IRedis
     {
-        private ConnectionMultiplexer _client;
+        private readonly ConnectionMultiplexer _client;
 
         // Create a new Redis connection
         public Redis()
@@ -22,7 +22,6 @@ namespace IncursionWebhook.Services.Redis
             if (_client is not null && _client.IsConnected)
             {
                 _client.Close();
-                _client = null;
             }
         }
 

@@ -10,7 +10,7 @@ namespace IncursionWebhook.Attributes
     {
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
-            var env = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            var env = context.HttpContext.RequestServices.GetService<IWebHostEnvironment>();
             if (!env.IsDevelopment())
             {
                 context.Result = new NotFoundResult();
@@ -20,7 +20,7 @@ namespace IncursionWebhook.Attributes
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            var env = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            var env = context.HttpContext.RequestServices.GetService<IWebHostEnvironment>();
             if (!env.IsDevelopment())
             {
                 context.Result = new NotFoundResult();

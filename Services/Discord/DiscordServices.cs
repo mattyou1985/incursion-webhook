@@ -1,4 +1,6 @@
-﻿using Discord;
+﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8604 // Possible null reference argument.
+using Discord;
 using IncursionWebhook.Models;
 using IncursionWebhook.Services.EveSwagger;
 using IncursionWebhook.Services.Redis;
@@ -33,7 +35,7 @@ namespace IncursionWebhook.Services.Discord
                 }
 
                 // Do not send a message if the webhook has the securityType disabled
-                object? x = webhook.GetType().GetProperty(securityType.ToString()).GetValue(webhook);
+                object? x = webhook?.GetType()?.GetProperty(securityType.ToString())?.GetValue(webhook);
                 if (bool.Parse(x.ToString())) 
                 {
                     await webhook.SendMessageAsync(text, embeds: new[] { embed });

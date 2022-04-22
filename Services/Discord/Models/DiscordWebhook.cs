@@ -43,7 +43,7 @@ namespace IncursionWebhook.Services.Discord
 
         /// <summary>Sends a new message to the Discord Webhook</summary>
         /// <returns>The messageId</returns>
-        public async Task<ulong> SendMessageAsync(string? text, bool isTTS = false, IEnumerable<Embed> embeds = null)
+        public async Task<ulong> SendMessageAsync(string? text, bool isTTS = false, IEnumerable<Embed>? embeds = null)
         {
             _client = new(WebhookUrl);
             return await _client.SendMessageAsync(text, isTTS, embeds);
