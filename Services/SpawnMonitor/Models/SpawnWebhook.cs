@@ -5,7 +5,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Models
     public class SpawnWebhook : DiscordWebhook
     {
         public SpawnWebhook() { }
-        public SpawnWebhook(DiscordWebhook? webhook)
+        public SpawnWebhook(DiscordWebhook webhook)
         {
             Id = webhook.Id;
             Avatar = webhook.Avatar;
@@ -26,10 +26,5 @@ namespace IncursionWebhook.Services.SpawnMonitor.Models
         /// <summary>The RoleId that should be @mentioned for <u>NEW</u> spawns</summary>
         /// <remarks>Leave NULL for none</remarks>
         public ulong? PingGroup { get; set; }
-
-        internal bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

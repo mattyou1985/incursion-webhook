@@ -8,7 +8,7 @@ namespace IncursionWebhook.Services.EveSwagger
         /// <summary>Find the closest trade hub</summary>
         /// <param name="originSystemId">systemId of the starting system</param>
         /// <remarks><em>options:</em> Jita, Amarr, Rens, Dodixie</remarks>
-        Task<SolarSystem> FindClosestHub(int originSystemId);
+        Task<SolarSystem?> FindClosestHub(int originSystemId);
 
         /// <summary>Find the route between two systems.</summary>
         /// <param name="originSystemId">systemId of the starting system</param>

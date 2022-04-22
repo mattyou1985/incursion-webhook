@@ -10,7 +10,7 @@ namespace IncursionWebhook.Services.EveSwagger.Attributes
             return objectType == typeof(string);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             string state = (string)reader.Value;
 
@@ -23,7 +23,7 @@ namespace IncursionWebhook.Services.EveSwagger.Attributes
             };
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             writer.WriteValue(value?.ToString()?.ToLower());
         }

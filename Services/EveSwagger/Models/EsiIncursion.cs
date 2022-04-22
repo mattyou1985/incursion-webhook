@@ -22,7 +22,7 @@ namespace IncursionWebhook.Services.EveSwagger.Models
         public State State { get; set; }
 
         [JsonProperty("infested_solar_systems")]
-        public int[] InfestedSolarSystems { get; set; }
+        public int[] InfestedSolarSystems { get; set; } = Array.Empty<int>();
 
         [JsonProperty("staging_solar_system_id")]
         public int StagingSystemId { get; set; }

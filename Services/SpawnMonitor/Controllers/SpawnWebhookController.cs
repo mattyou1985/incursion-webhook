@@ -52,6 +52,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Controllers
                 return BadRequest(error);
             }
 
+#pragma warning disable CS8604 // Possible null reference argument.
             SpawnWebhook newWebhook = new(webhook)
             {
                 WebhookUrl = webhookUrl.ToString(),
@@ -60,6 +61,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Controllers
                 Nullsec = Nullsec,
                 PingGroup = pingGroup
             };
+
 
             // Get existing webhooks, check for duplicates and if none are found add our new 
             // webhook to the collection, the database, and return a 201 Created result
@@ -73,6 +75,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Controllers
             await _redis.Set(redisNamespace, webhooks);
             return Created(Url.Action("Index"), newWebhook);
         }
+#pragma warning restore CS8604
 
         /// <summary>Change a Spawn Webhook's settings</summary>
         /// <param name="id">The ID of the webhook that you wish to update</param>

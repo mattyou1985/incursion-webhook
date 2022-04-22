@@ -9,14 +9,12 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
     public class FetchIncursions : IInvocable
     {
         private readonly IEveSwagger _esi;
-        private readonly ILogger<FetchIncursions> _logger;
         private readonly IQueue _queue;
         private readonly IRedis _redis;
         
-        public FetchIncursions(IEveSwagger esi, ILogger<FetchIncursions> logger, IQueue queue, IRedis redis)
+        public FetchIncursions(IEveSwagger esi, IQueue queue, IRedis redis)
         {
             _esi = esi;
-            _logger = logger;
             _queue = queue;
             _redis = redis;
         }
@@ -24,7 +22,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
         public async Task Invoke()
         {
             List<EsiIncursion> knownIncursions = await _redis.Get<List<EsiIncursion>>("incursions") ?? new();
-            List<EsiIncursion> esiIncursions = await _esi.GetIncursionsAsync();
+            List<EsiIncursion> esiIncursions = await _esi.GetIncursionsAsync() ?? new();
 
             // Foreach through the incursions reported by ESI
             foreach (EsiIncursion incursion in esiIncursions)

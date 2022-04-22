@@ -97,7 +97,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
             // Calculate distance to hubs
             List<string> remarks = new();
 
-            SolarSystem hub = await _esi.FindClosestHub(featuredSystem.Id);
+            SolarSystem? hub = await _esi.FindClosestHub(featuredSystem.Id);
             if (hub is null) remarks.Add("Spawn is Unreachable");
             else
             {
