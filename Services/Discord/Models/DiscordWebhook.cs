@@ -14,7 +14,6 @@ namespace IncursionWebhook.Services.Discord
         /// <summary>Discord Webhook ID</summary>
         public string Id { get; set; }
 
-        [JsonIgnore]
         public string WebhookUrl { get; set; }
 
 
@@ -50,7 +49,6 @@ namespace IncursionWebhook.Services.Discord
             return await _client.SendMessageAsync(text, isTTS, embeds);
         }
 
-        /// <inheritdoc cref="DiscordWebhookClient.DeleteMessageAsync(ulong, Discord.RequestOptions)"/>
         public async Task DeleteMessageAsync(ulong messageId)
         {
             _client = new(WebhookUrl);

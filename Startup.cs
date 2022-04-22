@@ -1,8 +1,8 @@
 ﻿using Coravel;
-using IncursionWebhook.Jobs;
 using IncursionWebhook.Services.Discord;
 using IncursionWebhook.Services.EveSwagger;
 using IncursionWebhook.Services.Redis;
+using IncursionWebhook.Services.SpawnMonitor;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Reflection;
 
@@ -35,12 +35,7 @@ namespace IncursionWebhook
             services.AddDiscord();
             services.AddEveSwagger();
             services.AddRedis();
-
-            // Add custom jobs
-            services.AddTransient<FetchIncursions>();
-            services.AddTransient<IncursionSpawned>();
-            services.AddTransient<IncursionSpawnDown>();
-            services.AddTransient<IncursionStateChange>();
+            services.AddSpawnMonitor();
         }
 
         public void Configure(IApplicationBuilder app)

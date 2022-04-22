@@ -1,10 +1,9 @@
 ﻿using Discord;
 using IncursionWebhook.Models;
 using IncursionWebhook.Services.EveSwagger;
-using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
+using IncursionWebhook.Services.SpawnMonitor.Models;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace IncursionWebhook.Services.Discord
 {
@@ -19,14 +18,27 @@ namespace IncursionWebhook.Services.Discord
             _redis = redis;
         }
 
-        /// <inheritdoc cref="IDiscordService.IncursionSpawn(Embed)"/>
-        public async Task IncursionSpawn(Embed embed)
+        /// <inheritdoc cref="IDiscordService.IncursionSpawn(Embed, Security)"/>
+        public async Task IncursionSpawn(Embed embed, Security securityType)
         {
-            List<DiscordWebhook> webhooks = await _redis.Get<List<DiscordWebhook>>("discord-webhooks");
-            //todo: remove non incursion spawn hooks
+            List<SpawnWebhook> webhooks = await _redis.Get<List<SpawnWebhook>>("spawnWebhooks") ?? new();
 
             // Send webhook messages
-            webhooks.ForEach(async webhook => await webhook.SendMessageAsync(null, embeds: new[] { embed }));
+            webhooks.ForEach(async webhook =>
+            {
+                string text = string.Empty;
+                if(webhook.PingGroup is not null)
+                {
+                    text = $"<@&{webhook.PingGroup}>";
+                }
+
+                // Do not send a message if the webhook has the securityType disabled
+                object? x = webhook.GetType().GetProperty(securityType.ToString()).GetValue(webhook);
+                if (bool.Parse(x.ToString())) 
+                {
+                    await webhook.SendMessageAsync(text, embeds: new[] { embed });
+                }
+            });
         }
 
         /// <inheritdoc cref="IDiscordService.TryCreate(Uri, out DiscordWebhook, out string?)"/>

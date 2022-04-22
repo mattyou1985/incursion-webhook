@@ -7,22 +7,23 @@ using IncursionWebhook.Services.Discord;
 using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 
-namespace IncursionWebhook.Jobs
+namespace IncursionWebhook.Services.SpawnMonitor.Invocables
 {
-    public class IncursionStateChange : IInvocable, IInvocableWithPayload<EsiIncursion>
+    public class SpawnStateChanged : IInvocable, IInvocableWithPayload<EsiIncursion>
     {
-        private readonly IDiscordService _client;
+        private readonly IDiscordService _discord;
         private readonly IRedis _redis;
         private readonly DateTime createdAt;
 
         public EsiIncursion Payload { get; set; }
 
-        public IncursionStateChange(IRedis redis, IDiscordService client)
-        {
-            _redis = redis;
-            _client = client;
 
-            // This is the time we noticed the spawn had changed
+        public SpawnStateChanged(IDiscordService discord, IRedis redis)
+        {
+            _discord = discord;
+            _redis = redis;
+
+            // This is the time we noticed the spawn was done
             // we store the value now, rather than in Invoke() 
             // so that it is as close to true as possible,
             // and not influenced by the job queue size
@@ -41,7 +42,7 @@ namespace IncursionWebhook.Jobs
                     systems.Add(await _redis.Get<SolarSystem>($"system:{systemId}"));
                 }
 
-                featuredSystem = systems.FirstOrDefault(c => c.SiteType == SiteType.Headquarters) 
+                featuredSystem = systems.FirstOrDefault(c => c.SiteType == SiteType.Headquarters)
                     ?? systems.FirstOrDefault(c => c.Id == Payload.StagingSystemId);
             }
 
@@ -60,7 +61,7 @@ namespace IncursionWebhook.Jobs
                 )
             );
 
-            await _client.IncursionSpawn(embed.Build());
+            await _discord.IncursionSpawn(embed.Build(), featuredSystem.Security);
         }
     }
 }

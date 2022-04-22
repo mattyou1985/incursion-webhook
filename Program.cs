@@ -1,5 +1,3 @@
-using Coravel;
-using IncursionWebhook.Jobs;
 using IncursionWebhook.Services.Redis;
 using IncursionWebhook.Services.SpawnMonitor;
 
@@ -18,13 +16,15 @@ namespace IncursionWebhook
                 try
                 {
                     IRedis? redis = services.GetRequiredService<IRedis>();
-                    await DbSeeder.InitializeAsync(redis);
+                    DbSeeder.Initialize(redis);
                 }
+#pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
+#pragma warning restore CS0168
                 {
                     // Need to work out what I want to do here,
                     // for now we shall re throw the error
-                    throw ex;
+                    throw;
                 }
             }
             #endregion

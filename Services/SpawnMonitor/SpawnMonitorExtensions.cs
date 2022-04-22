@@ -1,4 +1,6 @@
 ﻿using Coravel;
+using Coravel.Scheduling.Schedule.Interfaces;
+using IncursionWebhook.Services.SpawnMonitor.Invocables;
 
 namespace IncursionWebhook.Services.SpawnMonitor
 {
@@ -12,10 +14,10 @@ namespace IncursionWebhook.Services.SpawnMonitor
             services.AddQueue();
 
             #region Invocables
-            //services.AddTransient<FetchIncursions>();
-            //services.AddTransient<SpawnDetected>();
-            //services.AddTransient<SpawnStateChanged>();
-            //services.AddTransient<SpawnEnded>();
+            services.AddTransient<FetchIncursions>();
+            services.AddTransient<SpawnDetected>();
+            services.AddTransient<SpawnStateChanged>();
+            services.AddTransient<SpawnEnded>();
             #endregion
         }
 
@@ -24,11 +26,12 @@ namespace IncursionWebhook.Services.SpawnMonitor
         {
             serviceProvider.UseScheduler(scheduler =>
             {
-                //scheduler.Schedule<FetchIncursions>()
-                //    .EveryFiveMinutes()
-                //    .RunOnceAtStart()
-                //    .PreventOverlapping("fetchIncursions");
-            });
+                scheduler.Schedule<FetchIncursions>()
+                    .EveryFiveMinutes()
+                    .RunOnceAtStart()
+                    .PreventOverlapping("fetchIncursions");
+            })
+            .LogScheduledTaskProgress(serviceProvider.GetService<ILogger<IScheduler>>());
         }
     }
 }

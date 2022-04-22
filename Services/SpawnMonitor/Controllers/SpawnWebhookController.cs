@@ -36,6 +36,7 @@ namespace IncursionWebhook.Services.SpawnMonitor.Controllers
         }
 
         /// <summary>Register a new Spawn Webhook</summary>
+        /// <param name="webhookUrl">The URL of a Discord Webhook</param>
         /// <param name="Highsec">Monitor Highsec spawns</param>
         /// <param name="Lowsec">Monitor Lowsec spawns</param>
         /// <param name="Nullsec">Monitor Nullsec spawns</param>
