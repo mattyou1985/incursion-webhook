@@ -12,7 +12,7 @@ namespace IncursionWebhook.Models
         public double TrueSecurityStatus { get; set; }
 
         //[JsonConverter(typeof(SiteType))]
-        public SiteType SiteType { get; set; }
+        public SiteType SiteType { get; set; } = SiteType.None;
         
         [JsonIgnore]
         public float SecurityStatus
@@ -71,7 +71,7 @@ namespace IncursionWebhook.Models
         Assaults,
         Vanguards,
         Staging,
-        None
+        None = -1
     }
 }
 #pragma warning restore CS8618
