@@ -13,11 +13,17 @@ namespace IncursionWebhook.Services.Discord.Attributes
             if (!env.IsDevelopment())
             {
                 context.Result = new NotFoundResult();
+                return;
             }
         }
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
+            var env = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            if (!env.IsDevelopment())
+            {
+                context.Result = new NotFoundResult();
+            }
         }
     }
 }
