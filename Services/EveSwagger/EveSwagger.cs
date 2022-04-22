@@ -26,14 +26,14 @@ namespace IncursionWebhook.Services.EveSwagger
         }
 
         /// <inheritdoc cref="IEveSwagger.GetRouteAsync(int, int, RouteFlag)"/>
-        public async Task<List<SolarSystem>?> GetRouteAsync(int originSystemId, int destinationSystemId, RouteFlag mode = RouteFlag.secure)
+        public async Task<List<SolarSystem>> GetRouteAsync(int originSystemId, int destinationSystemId, RouteFlag mode = RouteFlag.secure)
         {
             _logger.LogDebug("ESI GET: /latest/route/{0}/{1}", originSystemId, destinationSystemId);
             HttpResponseMessage res = await _client.GetAsync($"latest/route/{originSystemId}/{destinationSystemId}?flag={mode}");
             if (!res.IsSuccessStatusCode)
             {
                 _logger.LogError($"[{res.StatusCode}] GET/latest/route/{originSystemId}/{destinationSystemId}: {res.ReasonPhrase}");
-                return null;
+                return new();
             }
 
             List<SolarSystem> systems = new();

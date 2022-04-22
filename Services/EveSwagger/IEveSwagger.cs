@@ -16,7 +16,7 @@ namespace IncursionWebhook.Services.EveSwagger
         /// <param name="mode">The route security preference</param>
         /// <returns>List of Systems in the route</returns>
         /// <remarks>GET: /latest/route/{origin}/{destination}</remarks>
-        Task<List<SolarSystem>?> GetRouteAsync(int originSystemId, int destinationSystemId, RouteFlag mode = RouteFlag.secure);
+        Task<List<SolarSystem>> GetRouteAsync(int originSystemId, int destinationSystemId, RouteFlag mode = RouteFlag.secure);
 
         /// <summary>Get the current Incursions from ESI</summary>
         /// <remarks>GET: /latest/incursions</remarks>

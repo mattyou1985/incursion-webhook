@@ -12,7 +12,7 @@ namespace IncursionWebhook.Services.EveSwagger.Attributes
 
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            string state = (string)reader.Value;
+            string? state = (string?)reader.Value;
 
             return state switch
             {
