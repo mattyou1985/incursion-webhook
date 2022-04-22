@@ -14,6 +14,7 @@ namespace IncursionWebhook.Services.Discord
         /// <summary>Discord Webhook ID</summary>
         public string Id { get; set; }
 
+        [JsonIgnore]
         public string WebhookUrl { get; set; }
 
 

@@ -1,6 +1,7 @@
 using Coravel;
 using IncursionWebhook.Jobs;
 using IncursionWebhook.Services.Redis;
+using IncursionWebhook.Services.SpawnMonitor;
 
 namespace IncursionWebhook
 {
@@ -29,15 +30,7 @@ namespace IncursionWebhook
             #endregion
 
             #region Scheduler
-            host.Services.UseScheduler(scheduler =>
-            {
-                scheduler.Schedule<FetchIncursions>()
-                    .EveryFiveMinutes()
-                    .RunOnceAtStart()
-                    .PreventOverlapping("fetchIncursions");
-
-                // todo: fetch killmails
-            });
+            host.Services.ScheduleSpawnMonitor();
             #endregion
 
             await host.RunAsync();

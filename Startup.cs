@@ -4,6 +4,7 @@ using IncursionWebhook.Services.Discord;
 using IncursionWebhook.Services.EveSwagger;
 using IncursionWebhook.Services.Redis;
 using Microsoft.AspNetCore.HttpOverrides;
+using System.Reflection;
 
 namespace IncursionWebhook
 {
@@ -20,7 +21,13 @@ namespace IncursionWebhook
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                // using System.Reflection;
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+            });
             services.AddScheduler();
             services.AddQueue();
 
