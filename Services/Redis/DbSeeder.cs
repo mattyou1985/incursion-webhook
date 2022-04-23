@@ -5,7 +5,7 @@ namespace IncursionWebhook.Services.Redis
 {
     public static class DbSeeder
     {
-        public static async Task InitializeAsync(IRedis redis)
+        public static void Initialize(IRedis redis)
         {
             List<Region> regions = JsonConvert.DeserializeObject<List<Region>>(File.ReadAllText("Data/Regions.json")) ?? new();
             regions.ForEach(region =>

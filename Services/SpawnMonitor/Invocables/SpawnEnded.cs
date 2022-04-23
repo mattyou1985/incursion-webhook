@@ -6,22 +6,22 @@ using IncursionWebhook.Services.Discord;
 using IncursionWebhook.Services.EveSwagger.Models;
 using IncursionWebhook.Services.Redis;
 
-namespace IncursionWebhook.Jobs
+namespace IncursionWebhook.Services.SpawnMonitor.Invocables
 {
-    /// <summary>Reports that an incursion has despawned.</summary>
-    public class IncursionSpawnDown : IInvocable, IInvocableWithPayload<EsiIncursion>
+    public class SpawnEnded : IInvocable, IInvocableWithPayload<EsiIncursion>
     {
+        private readonly IDiscordService _discord;
         private readonly IRedis _redis;
-        private readonly IDiscordService _client;
         private readonly DateTime createdAt;
 
         public EsiIncursion Payload { get; set; }
 
-        public IncursionSpawnDown(IRedis redis, IDiscordService webhookClient)
+
+        public SpawnEnded(IDiscordService discord, IRedis redis)
         {
-            _client = webhookClient;
+            _discord = discord;
             _redis = redis;
-            
+
             // This is the time we noticed the spawn was done
             // we store the value now, rather than in Invoke() 
             // so that it is as close to true as possible,
@@ -32,6 +32,7 @@ namespace IncursionWebhook.Jobs
         public async Task Invoke()
         {
             Constellation constellation = await _redis.Get<Constellation>($"constellation:{Payload.ConstellationId}");
+            SolarSystem stagingSystem = await _redis.Get<SolarSystem>($"system:{Payload.StagingSystemId}");
 
             EmbedBuilder embed = new()
             {
@@ -43,8 +44,8 @@ namespace IncursionWebhook.Jobs
             embed.AddField("Spawn Window Opens:", createdAt.AddHours(12).DiscordTimestamps(), true);
             embed.AddField("Spawn Window Closes:", createdAt.AddHours(36).DiscordTimestamps(), true);
 
-            await _client.IncursionSpawn(embed.Build());
+            await _discord.IncursionSpawn(embed.Build(), stagingSystem.Security);
         }
     }
 }
-#pragma warning restore CS8618
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

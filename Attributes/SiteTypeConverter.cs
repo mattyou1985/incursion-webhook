@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿#pragma warning disable CS8765 // Nullability of type of parameter doesn't match overridden member (possibly because of nullability attributes).
+using IncursionWebhook.Models;
+using Newtonsoft.Json;
 
-namespace IncursionWebhook.Models.Attributes
+namespace IncursionWebhook.Attributes
 {
     public class SiteTypeConverter : JsonConverter
     {
@@ -11,7 +13,7 @@ namespace IncursionWebhook.Models.Attributes
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string state = (string)reader.Value;
+            string? state = (string?)reader.Value;
 
             return state switch
             {
@@ -29,3 +31,4 @@ namespace IncursionWebhook.Models.Attributes
         }
     }
 }
+#pragma warning restore CS8765
