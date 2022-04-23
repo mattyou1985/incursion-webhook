@@ -53,7 +53,7 @@ namespace IncursionWebhook.Services.EveSwagger
             if (!res.IsSuccessStatusCode)
             {
                 _logger.LogError($"[{res.StatusCode}] GET/latest/incursions: {res.ReasonPhrase}");
-                return default;
+                return null;
             }
 
             return JsonConvert.DeserializeObject<List<EsiIncursion>>(await res.Content.ReadAsStringAsync());

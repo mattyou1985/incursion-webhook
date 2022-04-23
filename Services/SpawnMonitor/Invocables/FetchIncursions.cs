@@ -22,7 +22,12 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
         public async Task Invoke()
         {
             List<EsiIncursion> knownIncursions = await _redis.Get<List<EsiIncursion>>("incursions") ?? new();
-            List<EsiIncursion> esiIncursions = await _esi.GetIncursionsAsync() ?? new();
+            List<EsiIncursion>? esiIncursions = await _esi.GetIncursionsAsync();
+
+            // If ESI returns null, that indicates an error occured
+            // this is most likely an error connecting to ESI (e.g., 503, 502).
+            // Do not process this incursion job, try again next time
+            if (esiIncursions is null) return;
 
             // Foreach through the incursions reported by ESI
             foreach (EsiIncursion incursion in esiIncursions)

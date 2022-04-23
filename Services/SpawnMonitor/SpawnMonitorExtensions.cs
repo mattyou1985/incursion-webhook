@@ -27,7 +27,7 @@ namespace IncursionWebhook.Services.SpawnMonitor
             serviceProvider.UseScheduler(scheduler =>
             {
                 scheduler.Schedule<FetchIncursions>()
-                    .EveryFiveMinutes()
+                    .EveryMinute()
                     .RunOnceAtStart()
                     .PreventOverlapping("fetchIncursions");
             })
