@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8602 // Dereference of a possibly null reference.
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 using Coravel.Invocable;
 using Discord;
 using IncursionWebhook.Models;
@@ -131,9 +130,8 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
 
             embed.AddField("Remarks:", string.Join(", ", remarks).TrimStart('\n').AsNullIfEmpty() ?? "n/a");
 
-            await _discord.IncursionSpawn(embed.Build(), featuredSystem.Security);
+            await _discord.IncursionSpawn(embed.Build(), featuredSystem.Security, true);
         }
     }
 }
-#pragma warning restore CS8602
 #pragma warning restore CS8618

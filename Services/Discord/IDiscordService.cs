@@ -15,6 +15,7 @@ namespace IncursionWebhook.Services.Discord
         /// <summary>Send a ping to webhooks that monitor Incursion spawns</summary>
         /// <param name="embed">The embed that is to be sent to the webhooks</param>
         /// <param name="securityType">The type of security (High, Low or Null) affected by the incursion</param>
-        Task IncursionSpawn(Embed embed, Security securityType);
+        /// <param name="mentionPingGroup"><em>boolean:</em> Indicates weather the designated ping group should be mentioned</param>
+        Task IncursionSpawn(Embed embed, Security securityType, bool? mentionPingGroup = false);
     }
 }

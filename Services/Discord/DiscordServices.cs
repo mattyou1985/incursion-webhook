@@ -20,8 +20,8 @@ namespace IncursionWebhook.Services.Discord
             _redis = redis;
         }
 
-        /// <inheritdoc cref="IDiscordService.IncursionSpawn(Embed, Security)"/>
-        public async Task IncursionSpawn(Embed embed, Security securityType)
+        /// <inheritdoc cref="IDiscordService.IncursionSpawn(Embed, Security, bool?)"/>
+        public async Task IncursionSpawn(Embed embed, Security securityType, bool? mentionPingGroup = false)
         {
             List<SpawnWebhook> webhooks = await _redis.Get<List<SpawnWebhook>>("spawnWebhooks") ?? new();
 
@@ -29,7 +29,7 @@ namespace IncursionWebhook.Services.Discord
             webhooks.ForEach(async webhook =>
             {
                 string text = string.Empty;
-                if(webhook.PingGroup is not null)
+                if(mentionPingGroup ?? false && webhook.PingGroup is not null)
                 {
                     text = $"<@&{webhook.PingGroup}>";
                 }
