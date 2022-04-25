@@ -90,7 +90,8 @@ namespace IncursionWebhook.Services.SpawnMonitor.Invocables
                     ));
                 }
 
-                embed.AddField($"{t}", sb.ToString().AsNullIfEmpty() ?? "\u200b", true);
+                // Headquarters should be on their own line, everything else can be inline.
+                embed.AddField($"{t}", sb.ToString().AsNullIfEmpty() ?? "\u200b", t != SiteType.Headquarters);
             }
 
             // Calculate distance to hubs
