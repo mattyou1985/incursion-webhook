@@ -36,7 +36,7 @@ namespace IncursionWebhook.Services.Discord
 
                 // Do not send a message if the webhook has the securityType disabled
                 object? x = webhook?.GetType()?.GetProperty(securityType.ToString())?.GetValue(webhook);
-                if (bool.Parse(x.ToString())) 
+                if (x is not null && bool.Parse(x.ToString())) 
                 {
                     await webhook.SendMessageAsync(text, embeds: new[] { embed });
                 }
